@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import StickyNote from './StickyNote';
 import { StickyNoteIcon } from 'lucide-react';
-import Text from './Text';
 
 interface Note {
      id: string;
@@ -78,15 +77,13 @@ const NotesContainer: React.FC<NotesContainerProps> = ({ onNotesChange }) => {
                               key={note.id}
                               initialX={note.x}
                               initialY={note.y}
+                              initialContent={note.content}
                               color={note.color}
                               onColorChange={(color) => updateNoteColor(note.id, color)}
+                              onContentChange={(content) => updateNoteContent(note.id, content)}
                               onDragStart={() => moveNoteToFront(note.id)}
                               onDelete={() => deleteNote(note.id)}
-                         >
-                              <Text className="text-[22px] font-medium tracking-[-1.5px] leading-[2.5rem]">
-                                   لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است
-                              </Text>
-                         </StickyNote>
+                         />
                     ))}
                </div>
 

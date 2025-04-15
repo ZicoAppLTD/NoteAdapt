@@ -1,15 +1,20 @@
 import { Minus, MinusIcon } from 'lucide-react';
 import React, { useState, useRef, useEffect } from 'react';
+import { cn } from '@/lib/utils';
+import MultiScriptTextArea from './MultiScriptTextArea';
+import { getTranslation } from '@/utils/translationUtils';
+import { getLanguage } from '@/utils/languageUtils';
 
 interface StickyNoteProps {
      initialX?: number;
      initialY?: number;
-     children?: React.ReactNode;
+     initialContent?: string;
      color?: string;
      onColorChange?: (color: string) => void;
      onDragStart?: () => void;
      onDragEnd?: () => void;
      onDelete?: () => void;
+     onContentChange?: (content: string) => void;
 }
 
 const COLORS = ['#14B8A6', '#FF9B73', '#FFE135', '#FFFFFF'];
@@ -17,17 +22,20 @@ const COLORS = ['#14B8A6', '#FF9B73', '#FFE135', '#FFFFFF'];
 const StickyNote: React.FC<StickyNoteProps> = ({
      initialX = window.innerWidth / 2 - 100,
      initialY = window.innerHeight / 2 - 100,
-     children,
+     initialContent = '',
      color = '#FFFFFF',
      onColorChange,
      onDragStart,
      onDragEnd,
-     onDelete
+     onDelete,
+     onContentChange
 }) => {
      const [position, setPosition] = useState({ x: initialX, y: initialY });
+     const [content, setContent] = useState(initialContent);
      const noteRef = useRef<HTMLDivElement>(null);
      const [isDragging, setIsDragging] = useState(false);
      const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+     const currentLanguage = getLanguage();
 
      const handleMouseDown = (e: React.MouseEvent) => {
           if (noteRef.current) {
@@ -105,7 +113,25 @@ const StickyNote: React.FC<StickyNoteProps> = ({
                     <MinusIcon className="w-[20px] h-[20px] text-text/80" />
                </button>
 
-               {children}
+               <MultiScriptTextArea
+                    value={content}
+                    onChange={(value) => {
+                         setContent(value);
+                         onContentChange?.(value);
+                    }}
+                    className={cn(
+                         "w-full h-full resize-none bg-transparent",
+                         "flex items-center justify-center text-[22px] font-medium text-text/90"
+                    )}
+                    placeholder={getTranslation('note.placeholder', currentLanguage)}
+                    style={{
+                         backgroundColor: 'transparent',
+                    }}
+                    autoSize={{ minRows: 1, maxRows: 5 }}
+                    onMouseDown={(e) => {
+                         e.stopPropagation();
+                    }}
+               />
 
                <div className="absolute bottom-4 left-4 flex items-center gap-x-[8px]">
                     {COLORS.map((colorOption) => (
