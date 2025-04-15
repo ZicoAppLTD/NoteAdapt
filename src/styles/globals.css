@@ -1,0 +1,86 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+::-moz-selection { /* Code for Firefox */
+    background: rgb(248 116 22 / 0.1);
+}
+  
+::selection {
+    background: rgb(248 116 22 / 0.1);
+}
+
+@theme inline {
+    --color-text: var(--text);
+      --color-primary: var(--primary);
+      --color-border: var(--border);
+  }
+
+:root {
+    --text: oklch(0.27 0.0055 286.03);
+      --primary: oklch(0.65 0.1943 41.12);
+      --border: oklch(0.27 0.0055 286.03);
+    }
+
+  @layer base {
+    * {
+      @apply border-border;
+      }
+    body {
+      @apply text-text;
+      }
+  }
+  
+  /* Font face declarations for Farsi fonts */
+  @font-face {
+    font-family: 'Estedad';
+    src: url('../assets/fonts/fa/Estedad-FD-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Estedad';
+    src: url('../assets/fonts/fa/Estedad-FD-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Estedad';
+    src: url('../assets/fonts/fa/Estedad-FD-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+  }
+  
+  /* Font face declarations for English fonts */
+  @font-face {
+    font-family: 'Manrope';
+    src: url('../assets/fonts/en/Manrope-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Manrope';
+    src: url('../assets/fonts/en/Manrope-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Manrope';
+    src: url('../assets/fonts/en/Manrope-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+  }
+  
+  /* Language-specific font classes */
+  .font-fa {
+    font-family: 'Estedad', sans-serif;
+  }
+  
+  .font-en {
+    font-family: 'Manrope', sans-serif;
+  }
+  
+  

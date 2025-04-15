@@ -1,0 +1,11 @@
+{
+  "app": {
+    "name": "NoteAdapt / ZicoApp",
+    "changeLanguage": "Change Language"
+  },
+  "localeSwitcher": {
+    "title": "To change the language, just select the language you want.",
+    "moreLanguagesComingSoon": "We'll add more languages soon",
+    "close": "Cancel"
+  }
+}
