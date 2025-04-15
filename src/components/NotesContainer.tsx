@@ -81,6 +81,7 @@ const NotesContainer: React.FC<NotesContainerProps> = ({ onNotesChange }) => {
                               color={note.color}
                               onColorChange={(color) => updateNoteColor(note.id, color)}
                               onDragStart={() => moveNoteToFront(note.id)}
+                              onDelete={() => deleteNote(note.id)}
                          >
                               <Text className="text-[22px] font-medium tracking-[-1.5px] leading-[2.5rem]">
                                    لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است
