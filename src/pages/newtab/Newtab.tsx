@@ -4,27 +4,36 @@ import { useModal } from '@/hooks/useModalStore';
 import { getLanguage, getTextDirection } from '@/utils/languageUtils';
 import { LanguagesIcon } from "lucide-react";
 import { getTranslation } from '@/utils/translationUtils';
+import NotesContainer from '@/components/NotesContainer';
+import { useState } from 'react';
 
 export default function Newtab() {
   const { onModalOpen } = useModal();
   const currentLanguage = getLanguage();
   const direction = getTextDirection(currentLanguage);
+  const [hasNotes, setHasNotes] = useState(false);
 
   return (
-    <div className="w-full min-h-screen flex flex-col justify-center items-center" dir={direction}>
-      <header className="h-full max-w-6xl w-full">
-        <div className="h-full w-full flex flex-col justify-start text-start gap-y-[30px]">
+    <div
+      onClick={(e) => e.preventDefault()}
+      className="w-full h-screen overflow-hidden relative" dir={direction}>
+      {!hasNotes && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
           <Text className="antialiased text-text text-[25px] md:text-[28px] font-medium">
             {getTranslation('app.name', currentLanguage)}
           </Text>
-
-          <LanguagesIcon
-            onClick={() => onModalOpen("locale_switcher")}
-            className="cursor-pointer text-zinc-600/80 hover:text-black transition-all duration-500 size-5 mx-[5px]" />
         </div>
-      </header>
+      )}
 
+      <NotesContainer onNotesChange={setHasNotes} />
       <LocaleSwitcherModal />
+
+      <button
+        onClick={() => onModalOpen("locale_switcher")}
+        className="fixed top-8 right-8 bg-border/5 outline-0 border-[2px] border-border/[8%] backdrop-blur-md rounded-full cursor-pointer flex items-center justify-center transition-transform duration-200 hover:scale-110 p-[10px]"
+      >
+        <LanguagesIcon className="w-6 h-6" />
+      </button>
     </div>
   );
 }

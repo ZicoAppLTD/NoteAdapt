@@ -2,11 +2,11 @@
 @import "tw-animate-css";
 
 ::-moz-selection { /* Code for Firefox */
-    background: rgb(248 116 22 / 0.1);
+    background: rgb(39 39 42 / 0.1);
 }
   
 ::selection {
-    background: rgb(248 116 22 / 0.1);
+    background: rgb(39 39 42 / 0.1);
 }
 
 @theme inline {
