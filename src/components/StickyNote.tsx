@@ -15,6 +15,7 @@ interface StickyNoteProps {
      onDragEnd?: () => void;
      onDelete?: () => void;
      onContentChange?: (content: string) => void;
+     onPositionChange?: (x: number, y: number) => void;
 }
 
 const COLORS = ['#14B8A6', '#FF9B73', '#FFE135', '#FFFFFF'];
@@ -28,7 +29,8 @@ const StickyNote: React.FC<StickyNoteProps> = ({
      onDragStart,
      onDragEnd,
      onDelete,
-     onContentChange
+     onContentChange,
+     onPositionChange
 }) => {
      const [position, setPosition] = useState({ x: initialX, y: initialY });
      const [content, setContent] = useState(initialContent);
@@ -62,6 +64,7 @@ const StickyNote: React.FC<StickyNoteProps> = ({
                newY = Math.max(0, Math.min(window.innerHeight - noteHeight, newY));
 
                setPosition({ x: newX, y: newY });
+               onPositionChange?.(newX, newY);
                e.preventDefault();
           }
      };

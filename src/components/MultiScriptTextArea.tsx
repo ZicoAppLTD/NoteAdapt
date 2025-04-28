@@ -32,6 +32,13 @@ const MultiScriptTextArea: React.FC<MultiScriptTextAreaProps> = ({
      const [isFocused, setIsFocused] = useState(false);
      const currentLanguage = getLanguage();
 
+     // Update the contentEditable div's content when value prop changes
+     useEffect(() => {
+          if (editorRef.current && !isFocused) {
+               editorRef.current.innerText = value;
+          }
+     }, [value, isFocused]);
+
      const handleInput = (e: React.FormEvent<HTMLDivElement>) => {
           const newText = e.currentTarget.innerText;
           if (newText.length <= maxLength) {

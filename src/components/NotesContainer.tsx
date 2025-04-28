@@ -14,10 +14,18 @@ interface NotesContainerProps {
      onNotesChange: (hasNotes: boolean) => void;
 }
 
-const NotesContainer: React.FC<NotesContainerProps> = ({ onNotesChange }) => {
-     const [notes, setNotes] = useState<Note[]>([]);
+const NOTES_STORAGE_KEY = "zicoapp_notes";
 
+const NotesContainer: React.FC<NotesContainerProps> = ({ onNotesChange }) => {
+     const [notes, setNotes] = useState<Note[]>(() => {
+          // Load notes from localStorage on initial render
+          const savedNotes = localStorage.getItem(NOTES_STORAGE_KEY);
+          return savedNotes ? JSON.parse(savedNotes) : [];
+     });
+
+     // Save notes to localStorage whenever they change
      useEffect(() => {
+          localStorage.setItem(NOTES_STORAGE_KEY, JSON.stringify(notes));
           onNotesChange(notes.length > 0);
      }, [notes, onNotesChange]);
 
@@ -52,6 +60,12 @@ const NotesContainer: React.FC<NotesContainerProps> = ({ onNotesChange }) => {
           );
      };
 
+     const updateNotePosition = (id: string, x: number, y: number) => {
+          setNotes(prevNotes =>
+               prevNotes.map(note => note.id === id ? { ...note, x, y } : note)
+          );
+     };
+
      const deleteNote = (id: string) => {
           setNotes(prevNotes => prevNotes.filter(note => note.id !== id));
      };
@@ -81,6 +95,7 @@ const NotesContainer: React.FC<NotesContainerProps> = ({ onNotesChange }) => {
                               color={note.color}
                               onColorChange={(color) => updateNoteColor(note.id, color)}
                               onContentChange={(content) => updateNoteContent(note.id, content)}
+                              onPositionChange={(x, y) => updateNotePosition(note.id, x, y)}
                               onDragStart={() => moveNoteToFront(note.id)}
                               onDelete={() => deleteNote(note.id)}
                          />
