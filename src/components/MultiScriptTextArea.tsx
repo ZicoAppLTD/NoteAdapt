@@ -15,6 +15,7 @@ interface MultiScriptTextAreaProps {
           minRows?: number;
           maxRows?: number;
      };
+     maxLength?: number;
 }
 
 const MultiScriptTextArea: React.FC<MultiScriptTextAreaProps> = ({
@@ -24,7 +25,8 @@ const MultiScriptTextArea: React.FC<MultiScriptTextAreaProps> = ({
      placeholder,
      style,
      onMouseDown,
-     autoSize = { minRows: 1, maxRows: 5 }
+     autoSize = { minRows: 1, maxRows: 5 },
+     maxLength = 150
 }) => {
      const editorRef = useRef<HTMLDivElement>(null);
      const [isFocused, setIsFocused] = useState(false);
@@ -32,7 +34,24 @@ const MultiScriptTextArea: React.FC<MultiScriptTextAreaProps> = ({
 
      const handleInput = (e: React.FormEvent<HTMLDivElement>) => {
           const newText = e.currentTarget.innerText;
-          onChange(newText);
+          if (newText.length <= maxLength) {
+               onChange(newText);
+          } else {
+               // If text is too long, truncate it to maxLength
+               const truncatedText = newText.slice(0, maxLength);
+               onChange(truncatedText);
+               // Update the contentEditable div's content
+               if (editorRef.current) {
+                    editorRef.current.innerText = truncatedText;
+                    // Move cursor to the end
+                    const range = document.createRange();
+                    const sel = window.getSelection();
+                    range.selectNodeContents(editorRef.current);
+                    range.collapse(false);
+                    sel?.removeAllRanges();
+                    sel?.addRange(range);
+               }
+          }
      };
 
      const handlePaste = (e: React.ClipboardEvent) => {
@@ -87,6 +106,7 @@ const MultiScriptTextArea: React.FC<MultiScriptTextAreaProps> = ({
                <div
                     ref={editorRef}
                     contentEditable
+                    spellCheck={false}
                     onInput={handleInput}
                     onPaste={handlePaste}
                     onMouseDown={onMouseDown}
@@ -100,7 +120,7 @@ const MultiScriptTextArea: React.FC<MultiScriptTextAreaProps> = ({
                          ...style,
                          WebkitUserModify: 'read-write-plaintext-only',
                          caretColor: 'currentColor',
-                         overflow: 'auto',
+                         overflow: 'hidden',
                          direction: currentLanguage === 'fa' ? 'rtl' : 'ltr',
                          minHeight: '100%'
                     }}
